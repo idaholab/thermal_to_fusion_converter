@@ -1,0 +1,26 @@
+#
+# Macro file for "Hadr07.cc"
+#
+/control/verbose 1
+/run/verbose 1
+#
+/testhadr/det/setIsotopeMat deuterium 1 2 0.1 g/cm3
+#
+/testhadr/det/setNbOfAbsor  1
+/testhadr/det/setAbsor 1 deuterium  1 mm
+/testhadr/det/setSizeYZ 1 mm
+#
+/process/em/verbose 2
+/process/had/verbose 2
+#
+/run/initialize
+#
+/process/inactivate hadElastic
+/process/eLoss/StepFunctionLightIons 0.2 10 nm
+/process/em/printParameters
+#
+/gps/particle triton
+/gps/energy 400 keV
+#
+/run/printProgress 100000
+/run/beamOn 1000000

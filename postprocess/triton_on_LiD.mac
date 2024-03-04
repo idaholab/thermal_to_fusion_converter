@@ -1,0 +1,34 @@
+#
+# Macro file for "Hadr07.cc"
+#
+/control/verbose 1
+/run/verbose 1
+#
+/testhadr/det/setNbOfAbsor  1
+/testhadr/det/setAbsor 1 LiD_ts  1 mm
+/testhadr/det/setSizeYZ 1 mm
+#/testhadr/phys/thermalScattering true
+#
+#/process/em/verbose 2
+#/process/had/verbose 2
+#
+/run/initialize
+#
+#/process/inactivate hadElastic
+/process/eLoss/StepFunctionLightIons 0.2 10 nm
+/process/em/printParameters
+# multiple source (one per tritons generated in step (1))
+
+/control/execute triton_source.mac
+
+
+#
+/analysis/setFileName spectrum_2
+/analysis/h1/set 15 1000 1.e-7 20 MeV #secondary neutrons
+
+
+
+/run/printProgress 18664
+/run/beamOn 18664
+
+

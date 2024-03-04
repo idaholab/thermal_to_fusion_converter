@@ -1,0 +1,71 @@
+#
+# Macro file for "Hadr07.cc"
+#
+/control/verbose 0
+/run/verbose 0
+/run/numberOfThreads 48
+#/tracking/verbose 2
+#
+#
+#/process/em/verbose 1
+#/process/had/verbose 2
+#
+/random/setSeeds random1 random2 
+# if thickness is changed from 1 mm, update position of sources as well
+/neutron_converter/mat/set_mat material 1 mm
+#
+/run/initialize
+#
+#/process/inactivate hadElastic
+/process/eLoss/StepFunctionLightIons 0.2 10 nm
+/process/em/printParameters
+
+# neutron source on radial cylinder 
+/gps/particle neutron
+/gps/verbose 0
+/gps/pos/type Surface 
+/gps/pos/shape Cylinder 
+# 5 + 1 + 1 + 1 = 8 (default 1 mmm)
+/gps/pos/radius 8 mm
+# 25 + 1 + 1 + 1 = 28 (default 1 mm)
+/gps/pos/halfz  28 mm
+/gps/pos/confine outer_clad 
+/gps/ang/type cos 
+#/gps/energy 0.025 eV
+/gps/ene/type User
+/gps/hist/type energy
+/control/execute ../../atr_spectrum/hist_ene.txt
+/gps/source/intensity 0.78
+#
+#neutron source on planes (bottom/top of cylinder)
+/gps/source/add 0.11
+/gps/particle neutron
+/gps/pos/type Plane 
+/gps/pos/shape Circle 
+/gps/pos/radius 8 mm
+/gps/pos/centre  0 0 -28 mm
+/gps/pos/confine outer_clad 
+/gps/ang/type iso 
+#/gps/energy 0.025 eV
+/gps/ene/type User
+/gps/hist/type energy
+/control/execute ../../atr_spectrum/hist_ene.txt
+
+/gps/source/add 0.11
+/gps/particle neutron
+/gps/pos/type Plane 
+/gps/pos/shape Circle 
+/gps/pos/radius 8 mm
+/gps/pos/centre  0 0 28 mm
+/gps/pos/confine outer_clad 
+/gps/ang/type iso 
+#/gps/energy 0.025 eV
+/gps/ene/type User
+/gps/hist/type energy
+/control/execute ../../atr_spectrum/hist_ene.txt
+
+/analysis/setFileName spectrum_name 
+/analysis/h1/set 14 1000 0.1 10 MeV  #secondary triton spectrum
+#
+/run/printProgress 100000
+/run/beamOn number_of_primary_neutrons

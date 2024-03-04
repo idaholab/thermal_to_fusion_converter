@@ -1,0 +1,36 @@
+
+/run/initialize
+/vis/open 
+
+/vis/drawVolume
+/vis/viewer/set/background white
+#/vis/scene/add/axes
+/vis/scene/add/trajectories rich
+/vis/scene/endOfEventAction accumulate
+#/vis/geometry/set/forceSolid specimen
+/vis/geometry/set/forceSolid neutron_converter
+#/vis/geometry/set/forceSolid inner_clad
+#/vis/geometry/set/forceSolid outer_clad
+/vis/geometry/set/visibility World ! false
+/vis/geometry/set/colour neutron_converter 0.9 0.2 0.1 0.5
+/vis/geometry/set/visibility outer_clad ! false
+
+
+/vis/filtering/trajectories/create/particleFilter
+/vis/filtering/trajectories/particleFilter-0/add triton
+
+# Draw hits at end of event:
+/vis/scene/add/hits
+
+
+/gps/particle neutron
+/gps/pos/type Surface 
+/gps/pos/shape Cylinder 
+/gps/pos/radius 8 mm
+/gps/pos/halfz  28 mm
+/gps/pos/confine outer_clad 
+/gps/ang/type cos 
+/gps/energy 0.025 eV
+
+#/run/printProgress 1000
+#/run/beamOn 1000

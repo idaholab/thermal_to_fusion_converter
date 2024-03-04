@@ -1,0 +1,11 @@
+*.out 
+build/
+.DS_Store
+.vscode/
+.README.txt
+*.png 
+__pycache__
+/postprocess/**/
+*.csv 
+*.txt
+*.gz 
