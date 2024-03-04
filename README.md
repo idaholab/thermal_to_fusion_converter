@@ -82,7 +82,8 @@ The code can be run interactively, or using `frog path_to_macrofile`.
   id = 17: Kinetic energy of secondary neutrons emitted in LiD due to Li(T,n) reactions 
   id = 18: Kinetic energy of neutrons in target (both primary = from ATR, and secondary = from converter)
 
-  histogram id 14 is optional and can be invoked using 
+  histogram id 14 is optional and can be invoked using `/analysis/h1/set 14 1000 0.1 10 MeV`
+  
  6- TRACKING and STEP MAX
  
 
@@ -90,8 +91,14 @@ The code can be run interactively, or using `frog path_to_macrofile`.
  
    The Visualization Manager is set in the main().
    The initialisation of the drawing is done via the commands
-   /vis/... in the macro vis.mac. To get visualisation:
-   > /control/execute vis.mac
+   /vis/... in the macro vis.mac. To get visualisation: 
+   
+   /control/execute vis_geom_neutrons.mac
+   
+   /control/execute vis_geom_triton.mac
+   
+   /control/execute vis_geom_neutrons_secondary.mac
+   
  	
    The tracks are drawn at the end of event, and erased at the end of run.   
    gamma green   
