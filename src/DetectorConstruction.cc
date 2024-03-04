@@ -150,22 +150,36 @@ void DetectorConstruction::DefineMaterials()
   G4Material* Li_mat = new G4Material("Li_mat", 0.534 * g / cm3, 1, kStateSolid, temperature, pressure);
   Li_mat->AddElement(Li6, 1);  
 
-  G4Material* He3_mat = new G4Material("He3", 5.273e-04, 1, kStateGas, temperature, pressure);
+  G4double P_he3 = 5e5 ; // Pa 
+  G4double R = 8.314  ; // J/mol/K
+  G4double M_he3 = 3.016 ; // g/mol 
+  G4double rho_he3 = P_he3*M_he3/(R*temperature) ;
+  G4Material* He3_mat = new G4Material("He3", rho_he3 * g/m3, 1, kStateGas, temperature, pressure);
   He3_mat->AddElement(He3,1.0);
-  G4Material* D2 = new G4Material("D2", 7.133e-04, 1, kStateGas, temperature, pressure);
+
+  G4double P_d2 = 5e5 ; // Pa
+  G4double M_d2 = 4.08 ; // g/mol 
+  G4double rho_d2 = P_d2*M_d2/(R*temperature) ;
+  G4Material* D2 = new G4Material("D2", rho_d2, 1, kStateGas, temperature, pressure);
   D2->AddElement(D, 2); 
 
   // He3D2
-  // pressure of 5 Bars
-  G4Material* He3D2_1 = new G4Material("He3D2_1", 1.241e-03 * g/cm3, 2 );
+  // both partial pressure of 5 Bars
+  G4double rho_mix = rho_he3 + rho_d2 ;
+
+  G4Material* He3D2_1 = new G4Material("He3D2_1", rho_mix * g/m3, 2 );
   He3D2_1->AddMaterial(He3_mat, 0.5);
   He3D2_1->AddMaterial(D2, 0.5);
 
-  G4Material* He3D2_2 = new G4Material("He3D2_2", 9.769e-04 * g/cm3, 2 );
+  // D2 partial pressure to 10 bars
+  rho_mix = rho_he3 + 2*rho_d2 ;
+  G4Material* He3D2_2 = new G4Material("He3D2_2", rho_mix * g/m3, 2 );
   He3D2_2->AddMaterial(He3_mat, 1./3);
   He3D2_2->AddMaterial(D2, 2./3);
 
-  G4Material* He3D2_3 = new G4Material("He3D2_3", 8.890e-04 * g/cm3, 2 );
+  // D2 partial pressure to 15 bars
+  rho_mix = rho_he3 + 3*rho_d2 ;
+  G4Material* He3D2_3 = new G4Material("He3D2_3", rho_mix * g/m3, 2 );
   He3D2_3->AddMaterial(He3_mat, 1./4);
   He3D2_3->AddMaterial(D2, 3./4);
 
