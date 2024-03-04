@@ -154,7 +154,7 @@ if __name__ == "__main__":
                     else:
                         t_start = time.time()
                         print ('running case number {}'.format(run))
-                        os.system('../../frog {} >& {}'.format(mac_input,out))
+                        os.system('../../build/frog {} >& {}'.format(mac_input,out))
                         t_end = time.time() 
                         print ('total time to run geant = {:.1f} s'.format(t_end-t_start))
                 # if postprocess_geant:

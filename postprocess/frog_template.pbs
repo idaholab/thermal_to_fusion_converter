@@ -13,7 +13,7 @@ cat $PBS_NODEFILE
 #
 
 source ~/projects/sawtooth/geant4/install/bin/geant4.sh 
-frog=/home/martnico/neutron_converter/build/frog
+
 #
 cd $PBS_O_WORKDIR
 #
@@ -27,7 +27,7 @@ export TMPDIR=/tmp
 #
 #
 #
-$frog template_mac
+../../build/frog template_mac
 #
 #
 if [ $PBS_O_WORKDIR != $HOME ]
