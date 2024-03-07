@@ -66,6 +66,8 @@ DetectorConstruction::DetectorConstruction()
 {
   // default value = 1 mm thickness for neutron converter material
   fAbsorThickness = 1*mm; 
+  // cladding thickness = 1 mm  by default
+  fCladThickness = 1*mm;
   // materials
   DefineMaterials();
   // create commands for interactive definition of the detector
@@ -284,7 +286,7 @@ void DetectorConstruction::DefineMaterials()
 
   fAbsorMaterial = Li6D ;
   fTargetMaterial = steel ;   
-  fCladdingMaterial = zircaloy ;                     
+  fCladMaterial = zircaloy ;                     
   fDefaultMaterial = Galactic;
 
 
@@ -328,7 +330,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
   // inner cylinder radius - specimen location fixed at 0.5 cm 
   G4double inner_radius = 5.*mm;
-  G4double clad_width = 1.*mm ;
+  G4double clad_width = fCladThickness ;
   G4double neutron_converter_width = fAbsorThickness ;
   G4double hz = 2.5*cm; // full lenght = 2*hz
   //needed by other parts of the code
@@ -383,9 +385,9 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
   specimen_logic = new G4LogicalVolume(specimen, fTargetMaterial,  "specimen"); 
 
-  G4LogicalVolume* inner_clad_logic = new G4LogicalVolume(inner_clad, fCladdingMaterial,  "inner_clad");                             
+  G4LogicalVolume* inner_clad_logic = new G4LogicalVolume(inner_clad, fCladMaterial,  "inner_clad");                             
   G4LogicalVolume* neutron_converter_logic = new G4LogicalVolume(neutron_converter_solid, fAbsorMaterial,  "neutron_converter"); 
-  G4LogicalVolume* outer_clad_logic = new G4LogicalVolume(outer_clad, fCladdingMaterial,  "outer_clad"); 
+  G4LogicalVolume* outer_clad_logic = new G4LogicalVolume(outer_clad, fCladMaterial,  "outer_clad"); 
 
   G4VisAttributes* specimen_vis = new G4VisAttributes(G4Colour(0.5, 0.,0.,1.));  // blue
   specimen_logic->SetVisAttributes(specimen_vis);
@@ -479,5 +481,37 @@ void DetectorConstruction::SetAbsorThickness(G4double val)
       return;
     }
   fAbsorThickness = val;
+  G4RunManager::GetRunManager()->ReinitializeGeometry();
+}
+
+
+
+
+void DetectorConstruction::SetCladMaterial(const G4String& material)
+{
+  // search the material by its name
+
+  G4cout << "SetCladMaterial is called " << G4endl;
+  G4cout << "fCladMaterial is set to "<< material << G4endl;
+  fCladMaterial  = G4Material::GetMaterial(material);
+  if (!fCladMaterial){
+    G4cout << "cannot find material " << material << G4endl;
+  }
+  G4RunManager::GetRunManager()->PhysicsHasBeenModified();
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+void DetectorConstruction::SetCladThickness(G4double val)
+{
+  // change Absorber thickness
+  //
+
+  if (val <= DBL_MIN)
+    { G4cout << "\n --->warning from SetfCladThickness: thickness "
+             << val  << " out of range. Command refused" << G4endl;
+      return;
+    }
+  fCladThickness = val;
   G4RunManager::GetRunManager()->ReinitializeGeometry();
 }

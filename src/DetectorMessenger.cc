@@ -52,9 +52,11 @@ DetectorMessenger::DetectorMessenger(DetectorConstruction * det)
   
   fDetDir = new G4UIdirectory("/neutron_converter/mat/");
   fDetDir->SetGuidance("detector construction commands");
-  
    
-  fAbsorCmd = new G4UIcommand("/neutron_converter/mat/set_mat",this);
+  // breeder material name, thickness
+  // /neutron_converter/mat/set_breeder_mat LiD 1 mm 
+  
+  fAbsorCmd = new G4UIcommand("/neutron_converter/mat/set_breeder_mat",this);
   fAbsorCmd->SetGuidance("Set the neutron converter material and its thickness.");
   fAbsorCmd->SetGuidance("  material name");
   fAbsorCmd->SetGuidance("  thickness (with unit) : t>0.");
@@ -76,6 +78,41 @@ DetectorMessenger::DetectorMessenger(DetectorConstruction * det)
   //
   fAbsorCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
   fAbsorCmd->SetToBeBroadcasted(false);
+
+  // cladding material name, thickness
+  // /neutron_converter/mat/set_cladding_mat SS316 1 mm 
+
+  fCladCmd = new G4UIcommand("/neutron_converter/mat/set_clad_mat",this);
+  fCladCmd->SetGuidance("Set the cladding material and its thickness.");
+  fCladCmd->SetGuidance("  material name");
+  fCladCmd->SetGuidance("  thickness (with unit) : t>0.");
+  //
+  G4UIparameter* MatPrmClad = new G4UIparameter("material",'s',false);
+  MatPrmClad->SetGuidance("material name");
+  fCladCmd->SetParameter(MatPrmClad);
+  //    
+  G4UIparameter* ThickPrmClad = new G4UIparameter("thickness",'d',false);
+  ThickPrmClad->SetGuidance("thickness of absorber");
+  ThickPrmClad->SetParameterRange("thickness>0.");
+  fCladCmd->SetParameter(ThickPrmClad);
+  //
+  G4UIparameter* unitPrmClad = new G4UIparameter("unit",'s',false);
+  unitPrmClad->SetGuidance("unit of thickness");
+  unitList = G4UIcommand::UnitsList(G4UIcommand::CategoryOf("mm"));
+  unitPrm->SetParameterCandidates(unitList);
+  fCladCmd->SetParameter(unitPrm);
+  //
+  fCladCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
+  fCladCmd->SetToBeBroadcasted(false);
+
+
+
+
+
+
+
+
+
   
 }
 
@@ -86,6 +123,7 @@ DetectorMessenger::~DetectorMessenger()
   delete fDetDir;
   delete fTestemDir;
   delete fAbsorCmd;
+  delete fCladCmd;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -104,7 +142,18 @@ void DetectorMessenger::SetNewValue(G4UIcommand* command,G4String newValue)
      fDetector->SetAbsorMaterial (material);
      fDetector->SetAbsorThickness(tick);
    }
-   
+  
+  if (command == fCladCmd)
+   {
+     G4double tick;
+     G4String unt, mat;
+     std::istringstream is(newValue);
+     is >> mat >> tick >> unt;
+     G4String material=mat;
+     tick *= G4UIcommand::ValueOf(unt);
+     fDetector->SetCladMaterial (material);
+     fDetector->SetCladThickness(tick);
+   }
 
 }
 

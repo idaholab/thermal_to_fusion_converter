@@ -12,7 +12,8 @@
 #
 /random/setSeeds random1 random2 
 # if thickness is changed from 1 mm, update position of sources as well
-/neutron_converter/mat/set_mat material 1 mm
+/neutron_converter/mat/set_breeder_mat breeder_material breeder_thickness mm
+/neutron_converter/mat/set_clad_mat Zircaloy 1 mm
 #
 /run/initialize
 #
@@ -26,9 +27,9 @@
 /gps/pos/type Surface 
 /gps/pos/shape Cylinder 
 # 5 + 1 + 1 + 1 = 8 (default 1 mmm)
-/gps/pos/radius 8 mm
+/gps/pos/radius source_radius mm
 # 25 + 1 + 1 + 1 = 28 (default 1 mm)
-/gps/pos/halfz  28 mm
+/gps/pos/halfz  source_halfz mm
 /gps/pos/confine outer_clad 
 /gps/ang/type cos 
 #/gps/energy 0.025 eV
@@ -42,8 +43,8 @@
 /gps/particle neutron
 /gps/pos/type Plane 
 /gps/pos/shape Circle 
-/gps/pos/radius 8 mm
-/gps/pos/centre  0 0 -28 mm
+/gps/pos/radius source_radius mm
+/gps/pos/centre  0 0 -source_halfz mm
 /gps/pos/confine outer_clad 
 /gps/ang/type iso 
 #/gps/energy 0.025 eV
@@ -55,8 +56,8 @@
 /gps/particle neutron
 /gps/pos/type Plane 
 /gps/pos/shape Circle 
-/gps/pos/radius 8 mm
-/gps/pos/centre  0 0 28 mm
+/gps/pos/radius source_radius mm
+/gps/pos/centre  0 0 source_halfz mm
 /gps/pos/confine outer_clad 
 /gps/ang/type iso 
 #/gps/energy 0.025 eV

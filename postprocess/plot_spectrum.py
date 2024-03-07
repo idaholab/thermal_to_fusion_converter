@@ -54,7 +54,9 @@ def get_spectrum_from_csv(csv_list):
         df_ = pd.read_csv(csv_file,skiprows=6)
         df['entries'] += df_['entries']
     spectrum = df['entries'].to_numpy(dtype=np.float32)
-    spectrum /=sum(spectrum)
+    sum_spectrum = sum(spectrum)
+    if sum_spectrum!=0.:
+        spectrum /=sum(spectrum)
     bins = np.array(bins)
     return spectrum,bins
 #------------------------
@@ -79,8 +81,6 @@ def plot_spectrum(rundir,number_of_primary_neutrons,energy_cutoff,position,tot_f
         neutron_spectrum_emitted_{}.png '''
 #------------------------
     
-
-    norm = tot_flux[position] 
 
     #-------
     # index 14: Triton emission spectrum
@@ -139,13 +139,18 @@ def plot_spectrum(rundir,number_of_primary_neutrons,energy_cutoff,position,tot_f
 
     csv_list = glob.glob("{}/spectrum_*_h1_17.csv".format(rundir))
     phi_TLi,bins = get_spectrum_from_csv(csv_list)
+
     phi_TLi_du = np.divide(phi_TLi, lethargy, out=np.zeros_like(phi_TLi), where=lethargy!=0)
-    phi_TLi_du_normalized = phi_TLi_du / sum(phi_TLi_du)
+    if sum(phi_TLi)!=0.:#happens for He3D2
+        phi_TLi_du_normalized = phi_TLi_du / sum(phi_TLi_du)
+    else:
+        phi_TLi_du_normalized = phi_TLi_du
+
     n_neutrons_TLi  = get_total_neutrons(bins,csv_list,energy_cutoff)
 
     fig,ax = plt.subplots(figsize=(15,8))
-    phi_DT_du = phi_DT_du_normalized*norm
-    phi_TLi_du = phi_TLi_du_normalized*norm
+    phi_DT_du = phi_DT_du_normalized*tot_flux
+    phi_TLi_du = phi_TLi_du_normalized*tot_flux
     ax.step(bins,phi_DT_du,where='post',label='T-D neutrons')
     ax.step(bins,phi_TLi_du,where='post',label='T-Li neutrons')
     ax.set_xlabel('Secondary Neutron Spectrum (MeV)')
@@ -184,7 +189,7 @@ def plot_spectrum(rundir,number_of_primary_neutrons,energy_cutoff,position,tot_f
     csv_list = glob.glob("{}/spectrum_*_h1_18.csv".format(rundir))
     phi_target,bins = get_spectrum_from_csv(csv_list)
     #hack to remove odd thermal flux 
-    phi_target[0:2] = 0.
+    #phi_target[0:2] = 0.
     phi_du_target = np.divide(phi_target, lethargy, out=np.zeros_like(phi_target), where=lethargy!=0)
     phi_du_target /= sum(phi_du_target)
 
@@ -196,8 +201,8 @@ def plot_spectrum(rundir,number_of_primary_neutrons,energy_cutoff,position,tot_f
     # df.to_csv('debug.csv')
     #absolute flux - log-log
     fig,ax = plt.subplots(figsize=(20,10))
-    ax.step(bins,source_neutrons_geant_du*norm,where='post',linestyle='--',label='ATR unperturbed spectrum')
-    ax.step(bins,phi_du_target*norm,where='post',label='neutrons in target with converter')
+    ax.step(bins,source_neutrons_geant_du*tot_flux,where='post',linestyle='--',label='ATR unperturbed spectrum')
+    ax.step(bins,phi_du_target*tot_flux,where='post',label='neutrons in target with converter')
     ax.set_xlabel('Neutron Spectrum (MeV)')
     ax.set_ylabel('Neutron flux per unit lethargy (cm$^2$.s$^{-1}$)')
     ax.set_xscale('log')
@@ -207,8 +212,8 @@ def plot_spectrum(rundir,number_of_primary_neutrons,energy_cutoff,position,tot_f
     if position == 'A11':
         ax.legend(loc=2)
         ax2 = inset_axes(ax,width="125%",height="125%",bbox_to_anchor=(.5,.3,.4,.4),bbox_transform=ax.transAxes)
-        ax2.step(bins,source_neutrons_geant_du*norm,where='post',linestyle='--')
-        ax2.step(bins,phi_du_target*norm,where='post')
+        ax2.step(bins,source_neutrons_geant_du*tot_flux,where='post',linestyle='--')
+        ax2.step(bins,phi_du_target*tot_flux,where='post')
         #ax2.set_xscale('log')
         ax2.set_yscale('log')
         ax2.set_xticks([])
@@ -225,8 +230,8 @@ def plot_spectrum(rundir,number_of_primary_neutrons,energy_cutoff,position,tot_f
     elif position == 'OS15':
         ax.legend(loc=2)
         ax2 = inset_axes(ax,width="125%",height="125%",bbox_to_anchor=(.5,.2,.4,.4),bbox_transform=ax.transAxes)
-        ax2.step(bins,source_neutrons_geant_du*norm,where='post',linestyle='--')
-        ax2.step(bins,phi_du_target*norm,where='post')
+        ax2.step(bins,source_neutrons_geant_du*tot_flux,where='post',linestyle='--')
+        ax2.step(bins,phi_du_target*tot_flux,where='post')
         #ax2.set_xscale('log')
         ax2.set_yscale('log')
         ax2.set_xticks([])

@@ -62,7 +62,10 @@ public:
   void SetAbsorMaterial (const G4String&);     
   void SetAbsorThickness(G4double);
 
+  void SetCladMaterial (const G4String&);     
+  void SetCladThickness(G4double);
   
+
   G4int GetNbOfAbsor() {return fNbOfAbsor;}     
   G4Material* GetAbsorMaterial () {return fAbsorMaterial;};
   G4double    GetAbsorThickness() {return fAbsorThickness;}; 
@@ -74,10 +77,11 @@ private:
   G4LogicalVolume*   specimen_logic;
   G4int              fNbOfAbsor;
   G4Material*        fDefaultMaterial;  
-  G4Material*        fCladdingMaterial;  
+  G4Material*        fCladMaterial;  
   G4Material*        fAbsorMaterial ;
   G4Material*        fTargetMaterial ;
   G4double           fAbsorThickness ;
+  G4double           fCladThickness ;
   G4double           fAbsorSizeX;
   DetectorMessenger* fDetectorMessenger = nullptr;
 };
