@@ -27,7 +27,7 @@ export TMPDIR=/tmp
 #
 #
 #
-../../../build/frog template_mac
+../../../../../build/frog template_mac
 #
 #
 if [ $PBS_O_WORKDIR != $HOME ]

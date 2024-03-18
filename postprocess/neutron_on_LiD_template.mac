@@ -35,7 +35,7 @@
 #/gps/energy 0.025 eV
 /gps/ene/type User
 /gps/hist/type energy
-/control/execute ../../atr_spectrum/hist_ene.txt
+/control/execute ../../../../atr_spectrum/hist_ene.txt
 /gps/source/intensity 0.78
 #
 #neutron source on planes (bottom/top of cylinder)
@@ -46,11 +46,11 @@
 /gps/pos/radius source_radius mm
 /gps/pos/centre  0 0 -source_halfz mm
 /gps/pos/confine outer_clad 
-/gps/ang/type iso 
+/gps/ang/type cos 
 #/gps/energy 0.025 eV
 /gps/ene/type User
 /gps/hist/type energy
-/control/execute ../../atr_spectrum/hist_ene.txt
+/control/execute ../../../../atr_spectrum/hist_ene.txt
 
 /gps/source/add 0.11
 /gps/particle neutron
@@ -59,11 +59,11 @@
 /gps/pos/radius source_radius mm
 /gps/pos/centre  0 0 source_halfz mm
 /gps/pos/confine outer_clad 
-/gps/ang/type iso 
+/gps/ang/type cos 
 #/gps/energy 0.025 eV
 /gps/ene/type User
 /gps/hist/type energy
-/control/execute ../../atr_spectrum/hist_ene.txt
+/control/execute ../../../../atr_spectrum/hist_ene.txt
 
 /analysis/setFileName spectrum_name 
 /analysis/h1/set 14 1000 0.1 10 MeV  #secondary triton spectrum
