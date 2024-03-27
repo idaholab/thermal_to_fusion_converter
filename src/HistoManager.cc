@@ -122,7 +122,7 @@ void HistoManager::Book()
 
   // custom grid with equal energy width 
 
-  G4int ngroups = 1000 ;
+  G4int ngroups = 2000 ;
   G4double emin = 1e-10 ; // MeV 
   G4double emax = 20 ; // MeV 
   G4double du = log(emax/emin)/ngroups ; 
@@ -145,7 +145,7 @@ void HistoManager::Book()
       G4int ih = analysisManager->CreateH1(id[k], title[k], nbins, vmin, vmax);
       analysisManager->SetH1Activation(ih, false);
     }
-    else if (k==19) // equal lethargy energy grid with 10,000 groups
+    else if (k==19 || k==16 || k==17) // equal lethargy energy grid with 10,000 groups
   {
       G4int ih = analysisManager->CreateH1(id[k], title[k], custom_grid);
       analysisManager->SetH1Activation(ih, true);
