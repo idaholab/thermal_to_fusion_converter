@@ -18,7 +18,8 @@ G4bool MySensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *ROhis
     const G4ParticleDefinition *particle = track->GetParticleDefinition();
     G4double energy = track->GetKineticEnergy();
     if (particle == G4Neutron::Definition()) {
-            analysisManager->FillH1(18, energy);
+            analysisManager->FillH1(18, energy); // use scale 252 groups 
+            analysisManager->FillH1(19, energy); // scale 256 groups
             // track->SetTrackStatus(fStopAndKill);     
     }
 
