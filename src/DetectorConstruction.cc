@@ -515,3 +515,19 @@ void DetectorConstruction::SetCladThickness(G4double val)
   fCladThickness = val;
   G4RunManager::GetRunManager()->ReinitializeGeometry();
 }
+
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+void DetectorConstruction::SetTargetMaterial(const G4String& material)
+{
+  // search the material by its name
+
+  G4cout << "SetTargetMaterial is called " << G4endl;
+  G4cout << "fTargetMaterial is set to "<< material << G4endl;
+  fTargetMaterial  = G4Material::GetMaterial(material);
+  if (!fTargetMaterial){
+    G4cout << "cannot find material " << material << G4endl;
+  }
+  G4RunManager::GetRunManager()->PhysicsHasBeenModified();
+}

@@ -62,6 +62,7 @@ class DetectorMessenger: public G4UImessenger
     G4UIdirectory*             fDetDir     = nullptr;
     G4UIcommand*               fAbsorCmd   = nullptr;
     G4UIcommand*               fCladCmd    = nullptr;    
+    G4UIcommand*               fTargetCmd  = nullptr;    
 
 };
 

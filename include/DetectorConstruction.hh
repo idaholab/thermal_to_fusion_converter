@@ -65,6 +65,7 @@ public:
   void SetCladMaterial (const G4String&);     
   void SetCladThickness(G4double);
   
+  void SetTargetMaterial (const G4String&);  
 
   G4int GetNbOfAbsor() {return fNbOfAbsor;}     
   G4Material* GetAbsorMaterial () {return fAbsorMaterial;};

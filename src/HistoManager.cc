@@ -145,8 +145,8 @@ void HistoManager::Book()
       G4int ih = analysisManager->CreateH1(id[k], title[k], nbins, vmin, vmax);
       analysisManager->SetH1Activation(ih, false);
     }
-    else if (k==19 || k==16 || k==17) // equal lethargy energy grid with 10,000 groups
-  {
+    else if (k==16 || k==17 || k==18 || k==19) // equal lethargy energy grid with 10,000 groups
+    {
       G4int ih = analysisManager->CreateH1(id[k], title[k], custom_grid);
       analysisManager->SetH1Activation(ih, true);
     }
