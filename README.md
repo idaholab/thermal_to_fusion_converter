@@ -1,9 +1,10 @@
+Copyright 2024, Battelle Energy Alliance, LLC All Rights Reserved
 
 
                      FROG: Fusion neutROn Generator.
               Geant4-based code for spectrum neutron converter project.    
 
-0. INSTALLATION OF GEANT4 TOOLKIT
+0- INSTALLATION OF GEANT4 TOOLKIT
 
 Detailed instructions for installation on local machine available at:
 https://geant4-userdoc.web.cern.ch/UsersGuides/AllGuides/html/InstallationGuide/index.html.
@@ -27,11 +28,14 @@ make install
 
 If successful, a directory `~/projects/geant4/install/share/Geant4/data` should contain all the required libraries.
 In addition, the code requires the G4TENDL library for charged light ion transport, which can be downloaded at: https://geant4.web.cern.ch/download/11.2.1.html
-Place the library in the same directory. 
-Next, go to `~/projects/geant4/install/bin` and edit the file `geant4.sh` and uncomment the line and edit the path to the dataset if installed in not standard location. Add the path for the G4TENDL library: `export G4PARTICLEHPDATA=$GEANT4_DATA_DIR/G4TENDL1.4`.
+Place the light ion library in the directory containing all the other ones. 
+
+Next, go to `~/projects/geant4/install/bin` and edit the file `geant4.sh` and uncomment the line and edit the path to the dataset if installed in not standard location. 
+
+Add the path for the G4TENDL library: `export G4PARTICLEHPDATA=$GEANT4_DATA_DIR/G4TENDL1.4`.
 
 
-Before compiling Frog, the geant4.sh file needs to be sourced `source ~/projects/geant4/install/bin/geant4.sh`. 
+Before compiling Frog, the geant4.sh file needs to be sourced via `source ~/projects/geant4/install/bin/geant4.sh`. 
 Load the cmake module `module load cmake`. Then proceed by cloning this repository:
 ```git clone git@github.inl.gov:nicolas-martin/neutron_converter.git
 cd neutron_converter 
@@ -43,7 +47,7 @@ You should have an executable called **frog**.
 
 The code can be run interactively, or using `frog path_to_macrofile`. 
 
-1. MATERIALS AND GEOMETRY DEFINITION
+1- MATERIALS AND GEOMETRY DEFINITION
 
   The geometry consists of a hollow cylinder. 
   Neutron breeder material (default:LiD) is sandwiched in cladding (default: Zr4).
@@ -93,11 +97,11 @@ The code can be run interactively, or using `frog path_to_macrofile`.
    The initialisation of the drawing is done via the commands
    /vis/... in the macro vis.mac. To get visualisation: 
    
-   /control/execute vis_geom_neutrons.mac
+   `/control/execute vis_geom_neutrons.mac`
    
-   /control/execute vis_geom_triton.mac
+   `/control/execute vis_geom_triton.mac`
    
-   /control/execute vis_geom_neutrons_secondary.mac
+   `/control/execute vis_geom_neutrons_secondary.mac`
    
  	
    The tracks are drawn at the end of event, and erased at the end of run.   
